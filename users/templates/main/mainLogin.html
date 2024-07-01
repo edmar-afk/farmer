@@ -1,0 +1,108 @@
+{% load static tailwind_tags %}<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Admin Login</title>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0" />
+		<meta
+			http-equiv="X-UA-Compatible"
+			content="ie=edge" />
+		{% tailwind_css %}
+		<link
+			rel="stylesheet"
+			href="{% static 'css/style.css' %}" />
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+			integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer" />
+
+
+	</head>
+
+	<body class="bg">
+		{% include 'includes/navbar.html' %}
+
+		<section class="py-40">
+			<div class="flex flex-col items-center justify-center px-6 py-8 mx-auto lg:py-0">
+				
+				<div class="w-full bg-transparent md:mt-0 sm:max-w-md xl:p-0">
+					<div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+						<h1 class="text-xl text-center font-bold leading-tight tracking-tight text-white md:text-2xl">
+							Log in your Admin Account
+						</h1>
+
+						<form
+							class="space-y-4 md:space-y-6"
+							action="#"
+							method="post"
+							enctype="multipart/form-data"
+							id="loginForm">
+							{% csrf_token %}
+							<div>
+								<label
+									for="username"
+									class="block mb-2 text-sm font-medium text-white">
+									Username:
+								</label>
+								<input
+									type="text"
+									name="username"
+									id="username"
+									class="bg-gray-50 border border-gray-300 text-green-600 rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5"
+									placeholder=""
+									required />
+							</div>
+							<div>
+								<label
+									for="password"
+									class="block mb-2 text-sm font-medium text-white">
+									Password
+								</label>
+								<input
+									type="password"
+									name="password1"
+									id="password"
+									placeholder="••••••••"
+									class="bg-gray-50 border border-gray-300 text-green-600 rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5"
+									required />
+							</div>
+							<div
+								class="error-message text-red-200"
+								id="errorMessage">
+								Invalid username or password
+							</div>
+							<button
+								type="submit"
+								class="w-full text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+								Sign in
+							</button>
+						</form>
+						<script>
+							document.getElementById("loginForm").addEventListener("submit", function (event) {
+								event.preventDefault(); // Prevent the form from submitting
+
+								const username = document.getElementById("username").value;
+								const password = document.getElementById("password").value;
+								const errorMessage = document.getElementById("errorMessage");
+
+								// Replace these with your actual username and password
+								const validUsername = "admin";
+								const validPassword = "admin123";
+
+								if (username === validUsername && password === validPassword) {
+									window.location.href = "{% url 'mainDashboard' %}";
+								} else {
+									errorMessage.style.display = "block";
+								}
+							});
+						</script>
+					</div>
+				</div>
+			</div>
+		</section>
+	</body>
+</html>

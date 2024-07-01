@@ -1,0 +1,79 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0" />
+		<title>Dashboard</title>
+
+		{% tailwind_css %}
+		<link
+			rel="stylesheet"
+			href="{% static 'css/style.css' %}" />
+		<link
+			href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css"
+			rel="stylesheet" />
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+			integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer" />
+	</head>
+	<body class="bg">
+		{% include 'includes/adminSidebar.html' %}
+
+		<div class="p-4 sm:ml-64">
+			<p class="text-center py-4 text-3xl font-bold text-white">Admin's Profile</p>
+			<p class="text-white mt-24 mb-2 font-bold text-2xl">Farmers Registration</p>
+			{% for message in messages %} {% if message.level_tag == 'success' %}
+			<p class="text-left text-yellow-400 font-bold mt-4 mb-4 text-md">{{message}}</p>
+			{% else %}
+			<p class="text-left text-red-400 font-bold mt-4 mb-4 text-md">{{message}}</p>
+			{%endif%} {% endfor %}
+			<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+				<table class="w-full text-sm text-left rtl:text-right text-gray-500">
+					<thead class="text-xs text-white uppercase bg-yellow-500">
+						<tr>
+							<th
+								scope="col"
+								class="px-6 py-3">
+								name
+							</th>
+
+							<th
+								scope="col"
+								class="px-6 py-3">
+								Login Information
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for user in users %}
+						<tr class="bg-white even:bg-yellow-200">
+							<td
+								scope="row"
+								class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+								<i
+									class="fa fa-user"
+									aria-hidden="true"></i>
+								{{user.first_name}}
+							</td>
+							<td class="px-6 py-4">
+								<i
+									class="fa fa-clock animate-spin"
+									aria-hidden="true"></i>
+								Last Logged in at: {{user.last_login}}
+							</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+	</body>
+</html>
