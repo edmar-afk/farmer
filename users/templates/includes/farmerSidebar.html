@@ -37,27 +37,27 @@
 			<img src="{% static 'img/logo.jpg' %}" width="100" class="rounded-full mx-auto mb-12" alt="">
 			<li>
 				<a
-					href="{% url 'mainDashboard' %}"
+					href="{% url 'farmerDashboard' %}"
 					class="flex items-center p-2 text-white rounded-lg hover:bg-yellow-500 group">
 					<i
-						class="fa fa-user w-5 h-5 text-white transition duration-75 group-hover:text-white"
+						class="fa-solid fa-syringe w-5 h-5 text-white transition duration-75 group-hover:text-white"
 						aria-hidden="true"></i>
 					<span class="ms-3">Pesticide</span>
 				</a>
 			</li>
 			<li>
 				<a
-					href="{% url 'logInInfo' %}"
+					href="{% url 'farmerFertilizer' %}"
 					class="flex items-center p-2 text-white rounded-lg hover:bg-yellow-500 group">
 					<i
-						class="fa-solid fa-right-to-bracket w-5 h-5 text-white transition duration-75 group-hover:text-white"
+						class="fa-solid fa-wheat-awn w-5 h-5 text-white transition duration-75 group-hover:text-white"
 						aria-hidden="true"></i>
 					<span class="ms-3">Fertilizer</span>
 				</a>
 			</li>
 			<li>
 				<a
-					href="#"
+					href="{% url 'cropSeason' %}"
 					class="flex items-center p-2 text-white rounded-lg hover:bg-yellow-500 group">
 					<i class="fa-solid fa-screwdriver-wrench w-5 h-5 text-white transition duration-75 group-hover:text-white" aria-hidden="true"></i>
 					<span class="flex-1 ms-3 whitespace-nowrap">Crop Season</span>
@@ -65,7 +65,7 @@
 			</li>
 			<li>
 				<a
-					href="#"
+					href="{% url 'pest' %}"
 					class="flex items-center p-2 text-white rounded-lg hover:bg-yellow-500 group">
 					<i class="fa-solid fa-screwdriver-wrench w-5 h-5 text-white transition duration-75 group-hover:text-white" aria-hidden="true"></i>
 					<span class="flex-1 ms-3 whitespace-nowrap">Pest Description</span>

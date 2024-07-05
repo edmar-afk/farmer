@@ -5,7 +5,34 @@ from django.shortcuts import render, redirect, get_object_or_404, reverse
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count
 from django.contrib.auth import authenticate, login as auth_login
+from .models import Pesticides
+
+from django.db.models import F, FloatField, ExpressionWrapper, Value
+from django.db.models.functions import Replace, Cast, Abs
+from django.db.models.functions import Abs
 # Create your views here.
+
+
+def pesticides(request):
+    products = Pesticides.objects.all().order_by('-id')
+    
+    if request.method == 'POST':
+        pic = request.FILES.get('pic') 
+        name = request.POST['name']
+        display = request.POST['display']
+        description = request.POST['description']
+        price = request.POST['price']
+
+        new_product = Pesticides.objects.create(name=name, description=description,display=display, price=price, image=pic)
+        new_product.save()
+        messages.success(request, 'Product Added!')
+        
+    context = {
+        'products': products
+    }
+        
+    return render(request, 'main/pesticides.html', context)
+
 
 def mainLogin(request):
     return render(request, 'main/mainLogin.html')
@@ -78,8 +105,77 @@ def register(request):
     return render(request, 'register.html')
 
 
+def pest(request):
+    return render(request, 'farmer/pest.html')
+
+def cropSeason(request):
+    return render(request, 'farmer/cropSeason.html')
+
+
+
 def farmerDashboard(request):
-    return render(request, 'farmer/index.html')
+    query = request.GET.get('pesticides_search')
+    pesticides = Pesticides.objects.filter(display='Pesticides')
+    if query:
+        try:
+            query = float(query.replace(',', ''))  # Remove commas and convert to float
+
+            # Annotate and filter to handle price conversion and display condition
+            pesticides = Pesticides.objects.filter(display='Pesticides').annotate(
+                price_as_float=Cast(
+                    Replace(F('price'), Value(','), Value('')),
+                    output_field=FloatField()
+                ),
+                price_difference=ExpressionWrapper(
+                    Abs(Cast(
+                        Replace(F('price'), Value(','), Value('')),
+                        output_field=FloatField()
+                    ) - query),
+                    output_field=FloatField()
+                )
+            ).order_by('price_difference')
+
+        except ValueError:
+            pesticides = Pesticides.objects.none()
+        
+    context = {
+        'pesticides': pesticides,
+        'query': query if query else ''
+    }
+    return render(request, 'farmer/index.html', context)
+
+
+def farmerFertilizer(request):
+    query = request.GET.get('fertilizer_search')
+    pesticides = Pesticides.objects.filter(display='Fertilizer')
+    if query:
+        try:
+            query = float(query.replace(',', ''))  # Remove commas and convert to float
+
+            # Annotate and filter to handle price conversion and display condition
+            pesticides = Pesticides.objects.filter(display='Fertilizer').annotate(
+                price_as_float=Cast(
+                    Replace(F('price'), Value(','), Value('')),
+                    output_field=FloatField()
+                ),
+                price_difference=ExpressionWrapper(
+                    Abs(Cast(
+                        Replace(F('price'), Value(','), Value('')),
+                        output_field=FloatField()
+                    ) - query),
+                    output_field=FloatField()
+                )
+            ).order_by('price_difference')
+
+        except ValueError:
+            pesticides = Pesticides.objects.none()
+        
+    context = {
+        'pesticides': pesticides,
+        'query': query if query else ''
+    }
+    return render(request, 'farmer/fertilizer.html', context)
+
 
 
 
@@ -109,3 +205,8 @@ def logoutUser(request):
     auth.logout(request)
     messages.success(request, "Logged out Successfully!")
     return redirect('homepage')
+
+def removeProduct(request, product_id):
+    Pesticides.objects.filter(id=product_id).delete()
+    messages.success(request, 'Product Removed')
+    return redirect(request.META.get('HTTP_REFERER'))
